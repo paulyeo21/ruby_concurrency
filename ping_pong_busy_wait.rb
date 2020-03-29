@@ -4,15 +4,17 @@
 # when one thread gets access to the mutex, write ping or pong and release resource
 
 mutex = true
-alive = true
 
 # thread 1
 ping_thread = Thread.new do
-  while alive
+  loop do
+    # until mutex
+    # end
+
     if mutex
       puts 'ping'
       mutex = !mutex
-      # note: this is not thread-safe
+      # note: the following is not thread-safe
       # mutex = !mutex
       # puts 'ping'
     end
@@ -21,19 +23,21 @@ end
 
 # thread 2
 pong_thread = Thread.new do
-  while alive
+  loop do
+    # until not mutex
+    # end
+
     if not mutex
       puts 'pong'
       mutex = !mutex
-      # note: this is not thread-safe
+      # note: the following is not thread-safe
       # mutex = !mutex
       # puts 'pong'
     end
   end
 end
 
-sleep(2)
-alive = false
-ping_thread.join
-pong_thread.join
-
+# NOTE: sleep blocks main thread and allows ping and pong threads to finish
+sleep(5)
+# ping_thread.join
+# pong_thread.join
